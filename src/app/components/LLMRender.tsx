@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { runLLM } from "../lib/llm";
+import { SendIcon, LoadingIcon } from "./icons";
 
 type RunLLMResponse = {
   success: boolean;
@@ -14,17 +15,23 @@ type RunLLMResponse = {
   error?: string;
 };
 
-const question = "What is 2 + 2 multiplied by 3.";
-
 export default function LLMRender() {
   const [result, setResult] = useState<RunLLMResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const handleClick = async () => {
+  const [question, setQuestion] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuestion(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const result = await runLLM(question);
       setResult(result as RunLLMResponse);
       console.log({ result });
+      setQuestion("");
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -34,24 +41,26 @@ export default function LLMRender() {
   };
 
   return (
-    <div className="space-y-4">
-      {!loading && !result && (
-        <button
-          className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-          onClick={handleClick}
-        >
-          Click me
-        </button>
-      )}
-      {loading && <div className="mt-4 p-4">Loading...</div>}
+    <div className="space-y-4 min-w-[50vh]">
+      <form
+        className="flex flex-row gap-2 relative items-center w-full md:max-w-[500px] max-w-[calc(100dvw-32px) px-4 md:px-0"
+        onSubmit={handleSubmit}
+      >
+        <input
+          className="bg-zinc-100 rounded-md px-2 py-1.5 flex-1 outline-none dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300"
+          placeholder="Ask an arithmetical question"
+          autoFocus
+          value={question}
+          disabled={loading}
+          onChange={handleChange}
+        />
+        <div className="relative text-sm bg-zinc-100 rounded-lg size-9 flex-shrink-0 flex flex-row items-center justify-center cursor-pointer hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-800">
+          {loading ? <LoadingIcon /> : <SendIcon />}
+        </div>
+      </form>
 
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-zinc-900">
-          <h3 className="font-semibold mb-2">Question:</h3>
-          <p className="mt-1 p-2 bg-white dark:bg-gray-700 rounded border">
-            {question}
-          </p>
-
           <h3 className="font-semibold mb-2">Result:</h3>
 
           {result.success ? (

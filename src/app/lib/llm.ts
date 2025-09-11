@@ -70,11 +70,22 @@ const llmWithTools = llm.bindTools(tools);
 // Simple approach without LangGraph for now
 import { HumanMessage, AIMessage, ToolMessage } from "@langchain/core/messages";
 
+// In-memory conversation history (in production, you'd use a database)
+let conversationHistory: (HumanMessage | AIMessage | ToolMessage)[] = [];
+
 export const runLLM = async (question: string) => {
   try {
-    const result = await llmWithTools.invoke([new HumanMessage(question)]);
+    // Add the new human message to conversation history
+    const humanMessage = new HumanMessage(question);
+    conversationHistory.push(humanMessage);
+
+    // Invoke LLM with full conversation history
+    const result = await llmWithTools.invoke(conversationHistory);
 
     console.log("LLM Response:", result.content);
+
+    // Add the AI response to conversation history
+    conversationHistory.push(result);
 
     // If there are tool calls, execute them
     if (result.tool_calls && result.tool_calls.length > 0) {
@@ -84,21 +95,21 @@ export const runLLM = async (question: string) => {
         const tool = toolsByName[toolCall.name];
         if (tool) {
           const observation = await tool.invoke(toolCall.args);
-          toolResults.push(
-            new ToolMessage({
-              content: String(observation),
-              tool_call_id: toolCall.id || `call_${Date.now()}`,
-            })
-          );
+          const toolMessage = new ToolMessage({
+            content: String(observation),
+            tool_call_id: toolCall.id || `call_${Date.now()}`,
+          });
+          toolResults.push(toolMessage);
+          // Add tool result to conversation history
+          conversationHistory.push(toolMessage);
         }
       }
 
-      // Get final response after tool execution
-      const finalResult = await llmWithTools.invoke([
-        new HumanMessage(question),
-        result,
-        ...toolResults,
-      ]);
+      // Get final response after tool execution with full conversation history
+      const finalResult = await llmWithTools.invoke(conversationHistory);
+
+      // Add final response to conversation history
+      conversationHistory.push(finalResult);
 
       return {
         success: true,
@@ -128,4 +139,15 @@ export const runLLM = async (question: string) => {
     };
   }
 };
+
+// Function to clear conversation history
+export const clearConversation = async () => {
+  conversationHistory = [];
+};
+
+// Function to get conversation history (for debugging)
+export const getConversationHistory = async () => {
+  return conversationHistory;
+};
+
 export default runLLM;
