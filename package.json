@@ -14,7 +14,7 @@
     "@langchain/core": "1.0.0-alpha.4",
     "@langchain/langgraph": "1.0.0-alpha.1",
     "@langchain/openai": "^0.6.11",
-    "langchain": "1.0.0-alpha.5",
+    "langchain": "1.0.0-alpha.6",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",

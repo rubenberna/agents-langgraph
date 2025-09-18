@@ -1,14 +1,17 @@
+"use client";
+
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Hello World", href: "/hello-world", current: false },
-  { name: "Chat Agents", href: "/chat-agents", current: false },
+  { name: "Home", href: "/" },
+  { name: "Hello World", href: "/hello-world" },
+  { name: "Chat Agents", href: "/chat-agents" },
 ];
 
 function classNames(...classes: string[]) {
@@ -16,6 +19,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   return (
     <Disclosure
       as="nav"
@@ -45,9 +50,9 @@ export default function Navbar() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? "page" : undefined}
+                    aria-current={item.href === pathname ? "page" : undefined}
                     className={classNames(
-                      item.current
+                      item.href === pathname
                         ? "bg-gray-950/50 text-white"
                         : "text-gray-300 hover:bg-white/5 hover:text-white",
                       "rounded-md px-3 py-2 text-sm font-medium"
@@ -69,9 +74,9 @@ export default function Navbar() {
               key={item.name}
               as="a"
               href={item.href}
-              aria-current={item.current ? "page" : undefined}
+              aria-current={item.href === pathname ? "page" : undefined}
               className={classNames(
-                item.current
+                item.href === pathname
                   ? "bg-gray-950/50 text-white"
                   : "text-gray-300 hover:bg-white/5 hover:text-white",
                 "block rounded-md px-3 py-2 text-base font-medium"

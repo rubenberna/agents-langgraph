@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { runSimpleAgent } from "@/app/lib/llm";
+import { runSimpleAgent } from "@/app/lib/chatAgents/llm";
 import { SendIcon, LoadingIcon } from "@/app/components/icons";
 
 type RunLLMResponse = {
