@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { runLLM } from "../lib/llm";
-import { SendIcon, LoadingIcon } from "./icons";
+import { runSimpleAgent } from "@/app/lib/llm";
+import { SendIcon, LoadingIcon } from "@/app/components/icons";
 
 type RunLLMResponse = {
   success: boolean;
@@ -28,7 +28,7 @@ export default function LLMRender() {
     e.preventDefault();
     try {
       setLoading(true);
-      const result = await runLLM(question);
+      const result = await runSimpleAgent(question);
       setResult(result as RunLLMResponse);
       console.log({ result });
       setQuestion("");

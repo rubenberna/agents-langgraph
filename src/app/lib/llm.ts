@@ -67,13 +67,12 @@ const toolsByName = {
 const tools = Object.values(toolsByName);
 const llmWithTools = llm.bindTools(tools);
 
-// Simple approach without LangGraph for now
 import { HumanMessage, AIMessage, ToolMessage } from "@langchain/core/messages";
 
 // In-memory conversation history (in production, you'd use a database)
 let conversationHistory: (HumanMessage | AIMessage | ToolMessage)[] = [];
 
-export const runLLM = async (question: string) => {
+export const runSimpleAgent = async (question: string) => {
   try {
     // Add the new human message to conversation history
     const humanMessage = new HumanMessage(question);
@@ -82,7 +81,7 @@ export const runLLM = async (question: string) => {
     // Invoke LLM with full conversation history
     const result = await llmWithTools.invoke(conversationHistory);
 
-    console.log("LLM Response:", result.content);
+    console.log("LLM Response:", result);
 
     // Add the AI response to conversation history
     conversationHistory.push(result);
@@ -150,4 +149,4 @@ export const getConversationHistory = async () => {
   return conversationHistory;
 };
 
-export default runLLM;
+export default runSimpleAgent;
