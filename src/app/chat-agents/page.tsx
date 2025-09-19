@@ -1,13 +1,75 @@
-import LLMRender from "@/app/components/LLMRender";
+"use client";
+
+import { useState } from "react";
+import { runLangGraphAgent } from "@/app/lib/chatAgents/withLanggraph";
+import { SendIcon, LoadingIcon } from "@/app/components/icons";
+import { Message } from "@/app/components/message";
+import { JsonRenderer } from "@/app/components/jsonRenderer";
+import { getToolCalls } from "@/app/lib/utils/utils";
+import { ToggleButton } from "@/app/components/toggleButton";
 
 export default function ChatAgentsPage() {
+  const [result, setResult] = useState<{
+    fullResult: any[];
+    answer: any[];
+    toolCalls: any[];
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [langgraph, setLanggraph] = useState(false);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuestion(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const agentResult = await runLangGraphAgent(question);
+      console.log(agentResult);
+      const answer = agentResult?.at(-1)?.kwargs?.content;
+      const toolCalls = getToolCalls(agentResult);
+      setResult({ fullResult: agentResult, answer, toolCalls });
+      setQuestion("");
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <LLMRender />
+    <div className="flex w-full h-full justify-between align-top lg:flex-row gap-8 mx-auto p-8 relative">
+      <div className="flex flex-col gap-4 items-center flex-1">
+        <h1 className="text-4xl font-bold">Chat Agents</h1>
+        <form
+          className="flex flex-row gap-2 relative items-center w-full md:max-w-[500px] max-w-[calc(100dvw-32px) px-4"
+          onSubmit={handleSubmit}
+        >
+          <input
+            className="bg-zinc-100 rounded-md px-2 py-1.5 flex-1 outline-none dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300"
+            placeholder="Ask an arithmetical question"
+            autoFocus
+            value={question}
+            disabled={loading}
+            onChange={handleChange}
+          />
+          <div className="relative text-sm bg-zinc-100 rounded-lg size-9 flex-shrink-0 flex flex-row items-center justify-center cursor-pointer hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-800">
+            {loading ? <LoadingIcon /> : <SendIcon />}
+          </div>
+        </form>
+        <div className="flex flex-col gap-4">
+          {!!result?.answer?.length && (
+            <Message role="assistant" content={result.answer} />
+          )}
+          {!!result?.toolCalls?.length && (
+            <JsonRenderer jsonResult={result.toolCalls} title="Tool Calls" />
+          )}
         </div>
-      </main>
+      </div>
+
+      <JsonRenderer jsonResult={result?.fullResult} title="Full Result" />
     </div>
   );
 }
