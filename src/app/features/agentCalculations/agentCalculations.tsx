@@ -5,10 +5,10 @@ import { runLangGraphAgent } from "@/app/lib/chatAgents/withLanggraph";
 import { SendIcon, LoadingIcon } from "@/app/components/icons";
 import { Message } from "@/app/components/message";
 import { JsonRenderer } from "@/app/components/jsonRenderer";
+import { DiagramRenderer } from "@/app/components/diagramRenderer";
 import { getToolCalls } from "@/app/lib/utils/utils";
-import { ToggleButton } from "@/app/components/toggleButton";
 
-export default function ChatAgentsPage() {
+export default function AgentCalculations() {
   const [result, setResult] = useState<{
     fullResult: any[];
     answer: any[];
@@ -16,7 +16,7 @@ export default function ChatAgentsPage() {
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [question, setQuestion] = useState("");
-  const [langgraph, setLanggraph] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuestion(e.target.value);
   };
@@ -69,7 +69,10 @@ export default function ChatAgentsPage() {
         </div>
       </div>
 
-      <JsonRenderer jsonResult={result?.fullResult} title="Full Result" />
+      <div className="flex-1">
+        <DiagramRenderer />
+        <JsonRenderer jsonResult={result?.fullResult} title="Graph State" />
+      </div>
     </div>
   );
 }
