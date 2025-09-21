@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import AgentCalculations from "@/app/features/agentCalculations/agentCalculations";
 import { motion } from "motion/react";
+import SupportPage from "@/app/features/csHelper/csHelper";
 
 export default function Home() {
   const sectionTwoRef = useRef<HTMLDivElement>(null);
@@ -38,15 +38,16 @@ export default function Home() {
     <section
       ref={sectionTwoRef}
       key="second"
-      className="h-screen flex flex-col items-center justify-center" // 👈 different key than first
+      className="min-h-screen flex flex-col items-center justify-start py-8" // 👈 Changed to min-h-screen and justify-start with padding
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
+        className="w-full"
       >
-        <AgentCalculations />
+        <SupportPage />
       </motion.div>
     </section>
   );
