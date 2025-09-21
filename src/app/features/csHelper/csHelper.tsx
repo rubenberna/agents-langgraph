@@ -4,7 +4,12 @@ import { useState } from "react";
 import { runWorkflow } from "@/app/actions"; // Use the new single action
 import { TicketState } from "@/app/lib/csHelper/csHelper.lib"; // Import the Zod schema for type safety
 import { z } from "zod";
-import { BotIcon, LoadingIcon } from "@/app/components/icons";
+import {
+  BotIcon,
+  LoadingIcon,
+  TextIcon,
+  TicketIcon,
+} from "@/app/components/icons";
 
 type TicketStateType = z.infer<typeof TicketState>;
 
@@ -235,7 +240,10 @@ export default function TicketClassifier() {
                 <span>Generating Response...</span>
               </div>
             ) : (
-              "Generate Draft Response"
+              <>
+                <TextIcon />
+                Generate Draft Response
+              </>
             )}
           </button>
         </div>
@@ -263,10 +271,11 @@ export default function TicketClassifier() {
                 handleReset();
               }}
             >
+              <TicketIcon />
               Create Ticket
             </button>
             <button
-              className="rounded-full border border-solid border-white transition-colors flex items-center justify-center bg-black text-white gap-2 font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+              className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
               onClick={handleReset}
             >
               Start Over
