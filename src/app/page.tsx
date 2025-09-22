@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion } from "motion/react";
-import SupportPage from "@/features/csHelper/csHelper";
+import CSHelper from "@/features/csHelper/csHelper";
 import ViewWrapper from "@/components/viewWrapper";
 import AgentCalculations from "../features/agentCalculations/agentCalculations";
 
@@ -45,7 +45,7 @@ export default function Home() {
         nextRef={sectionThreeRef}
         handleScroll={handleScroll}
       >
-        <SupportPage />
+        <CSHelper />
       </ViewWrapper>
       <ViewWrapper
         viewRef={sectionThreeRef}
