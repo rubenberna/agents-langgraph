@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BotIcon, UserIcon } from "@/app/components/icons";
+import { BotIcon, UserIcon } from "@/components/icons";
 import { memo, ReactNode } from "react";
-import { Markdown } from "@/app/components/markdown";
+import { Markdown } from "@/components/markdown";
 
 interface IProps {
   role: string;

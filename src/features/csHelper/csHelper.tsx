@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { runWorkflow } from "@/app/actions"; // Use the new single action
-import { TicketState } from "@/app/lib/csHelper/csHelper.lib"; // Import the Zod schema for type safety
+import { runWorkflow } from "@/actions"; // Use the new single action
+import { TicketState } from "@/lib/csHelper/csHelper.lib"; // Import the Zod schema for type safety
 import { z } from "zod";
 import {
   BotIcon,
@@ -10,7 +10,7 @@ import {
   SendIcon,
   TextIcon,
   TicketIcon,
-} from "@/app/components/icons";
+} from "@/components/icons";
 
 type TicketStateType = z.infer<typeof TicketState>;
 
@@ -267,7 +267,7 @@ export default function TicketClassifier() {
               }}
             >
               <TicketIcon />
-              Create Ticket
+              Create Bug ticket
             </button>
             <button
               className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { runLangGraphAgent } from "@/app/lib/chatAgents/withLanggraph";
-import { SendIcon, LoadingIcon } from "@/app/components/icons";
-import { Message } from "@/app/components/message";
-import { JsonRenderer } from "@/app/components/jsonRenderer";
-import { DiagramRenderer } from "@/app/components/diagramRenderer";
-import { getToolCalls } from "@/app/lib/utils/utils";
+import { runLangGraphAgent } from "@/lib/chatAgents/withLanggraph";
+import { SendIcon, LoadingIcon } from "@/components/icons";
+import { Message } from "@/components/message";
+import { JsonRenderer } from "@/components/jsonRenderer";
+import { DiagramRenderer } from "@/components/diagramRenderer";
+import { getToolCalls } from "@/lib/utils/utils";
 
 export default function AgentCalculations() {
   const [result, setResult] = useState<{
