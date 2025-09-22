@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { runWorkflow } from "@/actions"; // Use the new single action
+import { runWorkflow } from "@/actions/csHelper.action"; // Use the new single action
 import { TicketState } from "@/lib/csHelper/csHelper.lib"; // Import the Zod schema for type safety
 import { z } from "zod";
 import Header from "@/components/header";

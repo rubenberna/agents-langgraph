@@ -1,5 +1,3 @@
-"use server";
-
 // Step 0: define tools and model
 import { ChatOpenAI } from "@langchain/openai";
 import { tool } from "@langchain/core/tools";
@@ -101,7 +99,7 @@ This lets the LLM automatically issue tool calls.
 */
 
 // Step 1: define state Shape
-import { StateGraph, START, END } from "@langchain/langgraph";
+import { StateGraph, START, END, MemorySaver } from "@langchain/langgraph";
 import { MessagesZodMeta } from "@langchain/langgraph";
 import { registry } from "@langchain/langgraph/zod";
 import { type BaseMessage } from "@langchain/core/messages";
@@ -201,13 +199,15 @@ This function is used by addConditionalEdges to branch:
 */
 
 // Step 5: Build and compile the agent
-const agent = new StateGraph(MessagesState)
+const workflow = new StateGraph(MessagesState)
   .addNode("llmCall", llmCall)
   .addNode("toolNode", toolNode)
   .addEdge(START, "llmCall")
   .addConditionalEdges("llmCall", shouldContinue, ["toolNode", END])
-  .addEdge("toolNode", "llmCall")
-  .compile();
+  .addEdge("toolNode", "llmCall");
+
+const checkpointer = new MemorySaver();
+const agent = workflow.compile({ checkpointer });
 
 /*
 START → llmCall → (conditional)
@@ -229,17 +229,8 @@ That’s exactly how you implement a ReAct-style agent.
 
 // Step 6: Invoke the agent
 // Invoke
-import { HumanMessage } from "@langchain/core/messages";
-import { normalizeResultToClientFormat } from "../utils/utils";
 
-const runLangGraphAgent = async (question: string) => {
-  const result = await agent.invoke({
-    messages: [new HumanMessage(question)],
-  });
-  return normalizeResultToClientFormat(result);
-};
-
-export { runLangGraphAgent };
+export { agent, MessagesState };
 
 /*
 Wraps everything so you can call runLangGraphAgent("what is 2 + 3 * 4?").

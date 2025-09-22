@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { runLangGraphAgent } from "@/lib/chatAgents/withLanggraph";
+import { runAgentCalculations } from "@/actions/agentCalculations.action";
 import { SendIcon, LoadingIcon } from "@/components/icons";
 import { Message } from "@/components/message";
 import { JsonRenderer } from "@/components/jsonRenderer";
 import { getToolCalls } from "@/lib/utils/utils";
 import Header from "@/components/header";
+import { useThreadId } from "@/hooks/useSessionId";
 
 export default function AgentCalculations() {
+  const threadId = useThreadId();
   const [result, setResult] = useState<{
     fullResult: any[];
     answer: any[];
@@ -23,9 +25,11 @@ export default function AgentCalculations() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!threadId) return; // Wait for threadId to be available
+
     try {
       setLoading(true);
-      const agentResult = await runLangGraphAgent(question);
+      const agentResult = await runAgentCalculations(question, threadId);
       console.log(agentResult);
       const answer = agentResult?.at(-1)?.kwargs?.content;
       const toolCalls = getToolCalls(agentResult);
