@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   BotIcon,
   LoadingIcon,
+  SendIcon,
   TextIcon,
   TicketIcon,
 } from "@/app/components/icons";
@@ -125,7 +126,7 @@ export default function TicketClassifier() {
               onClick={handleClassify}
               disabled={loading || !customerMsg.trim()}
             >
-              {loading ? <LoadingIcon size={20} /> : <BotIcon />}
+              {loading ? <LoadingIcon size={20} /> : <SendIcon />}
             </button>
           </div>
         </div>
@@ -180,7 +181,7 @@ export default function TicketClassifier() {
                 // Using a label makes the entire area clickable for better accessibility
                 className={`relative rounded-xl p-4 cursor-pointer transition-all duration-200 border-2 ${
                   selectedPriority === option.value
-                    ? "border-zinc-500 dark:border-zinc-400 bg-zinc-100 dark:bg-zinc-800"
+                    ? " bg-zinc-100 dark:bg-sky-900/20"
                     : "border-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 }`}
                 onClick={() => setSelectedPriority(option.value)}
@@ -199,7 +200,6 @@ export default function TicketClassifier() {
                     />
                     {/* 2. This is our custom-styled radio button */}
                     <div className="w-4 h-4 bg-white dark:bg-zinc-700 border border-zinc-400 dark:border-zinc-500 rounded-full peer-checked:bg-zinc-600 dark:peer-checked:bg-zinc-400 peer-checked:border-transparent">
-                      {/* 3. This is the inner dot, visible only when checked */}
                       <div
                         className={`w-full h-full rounded-full scale-0 transition-transform peer-checked:scale-50 bg-white`}
                       ></div>
@@ -213,11 +213,6 @@ export default function TicketClassifier() {
                       >
                         {option.label}
                       </h4>
-                      {selectedPriority === option.value && (
-                        <span className="text-xs bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 px-2 py-1 rounded-full">
-                          Selected
-                        </span>
-                      )}
                     </div>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       {option.description}

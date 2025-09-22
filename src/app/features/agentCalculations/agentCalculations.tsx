@@ -41,7 +41,7 @@ export default function AgentCalculations() {
 
   return (
     <div className="flex w-full h-full justify-between align-top lg:flex-row gap-8 mx-auto p-8 relative">
-      <div className="flex flex-col gap-4 items-center flex-1">
+      <div className="flex flex-col gap-4 items-center flex-1 w-2/3">
         <h1 className="text-4xl font-bold">Chat Agents</h1>
         <form
           className="flex flex-row gap-2 relative items-center w-full md:max-w-[500px] max-w-[calc(100dvw-32px) px-4"
@@ -68,7 +68,7 @@ export default function AgentCalculations() {
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="w-1/3">
         <DiagramRenderer />
         <JsonRenderer jsonResult={result?.fullResult} title="Graph State" />
       </div>
