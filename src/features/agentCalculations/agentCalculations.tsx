@@ -5,8 +5,8 @@ import { runLangGraphAgent } from "@/lib/chatAgents/withLanggraph";
 import { SendIcon, LoadingIcon } from "@/components/icons";
 import { Message } from "@/components/message";
 import { JsonRenderer } from "@/components/jsonRenderer";
-import { DiagramRenderer } from "@/components/diagramRenderer";
 import { getToolCalls } from "@/lib/utils/utils";
+import Header from "@/components/header";
 
 export default function AgentCalculations() {
   const [result, setResult] = useState<{
@@ -42,7 +42,11 @@ export default function AgentCalculations() {
   return (
     <div className="flex w-full h-full justify-between align-top lg:flex-row gap-8 mx-auto p-8 relative">
       <div className="flex flex-col gap-4 items-center flex-1 w-2/3">
-        <h1 className="text-4xl font-bold">Chat Agents</h1>
+        <Header
+          src="/tool_agent.svg"
+          title="Chat Agents"
+          subtitle="LLM agents that can perform calculations and use tools"
+        />
         <form
           className="flex flex-row gap-2 relative items-center w-full md:max-w-[500px] max-w-[calc(100dvw-32px) px-4"
           onSubmit={handleSubmit}
@@ -68,10 +72,11 @@ export default function AgentCalculations() {
         </div>
       </div>
 
-      <div className="w-1/3">
-        <DiagramRenderer />
-        <JsonRenderer jsonResult={result?.fullResult} title="Graph State" />
-      </div>
+      {!!result?.fullResult?.length && (
+        <div className="w-1/3">
+          <JsonRenderer jsonResult={result?.fullResult} title="Graph State" />
+        </div>
+      )}
     </div>
   );
 }

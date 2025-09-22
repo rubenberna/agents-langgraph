@@ -35,6 +35,7 @@ const ClassificationSchema = z.object({
   priority: z.enum(["High", "Medium", "Low"]),
   reason: z.string().describe("A brief explanation for the classification."),
 });
+
 async function classifyNode(state: z.infer<typeof TicketState>) {
   // 2. Bind the schema to the model to enforce structured output
   const structuredLlm = llm.withStructuredOutput(ClassificationSchema);

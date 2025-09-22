@@ -4,17 +4,23 @@ import { useState } from "react";
 import { runWorkflow } from "@/actions"; // Use the new single action
 import { TicketState } from "@/lib/csHelper/csHelper.lib"; // Import the Zod schema for type safety
 import { z } from "zod";
-import Header from "./header";
-import CustomerMsgInput from "./customerMsgInput";
-import CustomerMsgDisplay from "./customerMsgDisplay";
-import Classification from "./classification";
-import ResponseDraft from "./responseDraft";
+import Header from "@/components/header";
+import CustomerMsgInput from "@/features/csHelper/customerMsgInput";
+import CustomerMsgDisplay from "@/features/csHelper/customerMsgDisplay";
+import Classification from "@/features/csHelper/classification";
+import ResponseDraft from "@/features/csHelper/responseDraft";
 
 type TicketStateType = z.infer<typeof TicketState>;
 
+const mockMessage = `
+Hi,
+
+The app doesn't work. I cannot process payments.
+`;
+
 export default function CSHelper() {
   // Use a single state object that matches the graph's state
-  const [customerMsg, setCustomerMsg] = useState<string>("");
+  const [customerMsg, setCustomerMsg] = useState<string>(mockMessage);
   const [state, setState] = useState<Partial<TicketStateType>>({});
   const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -68,10 +74,11 @@ export default function CSHelper() {
 
   return (
     <div className="max-w-4xl mx-auto p-8 space-y-8">
-      {/* Header */}
-      <Header />
-
-      {/* Message Input Section */}
+      <Header
+        src="/router.svg"
+        title="Support Triage Demo"
+        subtitle="AI-powered customer support message classification"
+      />
       {!state.customerMessage ? (
         <CustomerMsgInput
           customerMsg={customerMsg}
@@ -83,7 +90,6 @@ export default function CSHelper() {
         <CustomerMsgDisplay customerMessage={state.customerMessage} />
       )}
 
-      {/* Priority Selection Section */}
       {state.classification && !state.responseDraft && (
         <Classification
           priority={state.classification.priority}
@@ -94,8 +100,6 @@ export default function CSHelper() {
           handleGenerate={handleGenerate}
         />
       )}
-
-      {/* Response Draft Section */}
       {state.responseDraft && (
         <ResponseDraft
           responseDraft={state.responseDraft}
