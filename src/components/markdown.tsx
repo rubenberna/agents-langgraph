@@ -23,6 +23,9 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
         </code>
       );
     },
+    br: ({ node, children, ...props }: any) => {
+      return <br {...props} />;
+    },
     ol: ({ node, children, ...props }: any) => {
       return (
         <ol className="list-decimal list-outside ml-4" {...props}>
@@ -51,6 +54,16 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
         </span>
       );
     },
+    img: ({ node, children, ...props }: any) => {
+      return (
+        <img
+          src={props.src}
+          alt={props.alt}
+          style={{ margin: "20px 0", maxWidth: "500px" }}
+          {...props}
+        />
+      );
+    },
     a: ({ node, children, ...props }: any) => {
       return (
         <Link
@@ -74,5 +87,5 @@ const NonMemoizedMarkdown = ({ children }: { children: string }) => {
 
 export const Markdown = React.memo(
   NonMemoizedMarkdown,
-  (prevProps, nextProps) => prevProps.children === nextProps.children,
+  (prevProps, nextProps) => prevProps.children === nextProps.children
 );

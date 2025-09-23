@@ -5,10 +5,12 @@ export default function DiagramDialog({
   isOpen,
   onClose,
   src,
+  dialogText,
 }: {
   isOpen: boolean;
   onClose: () => void;
   src: string;
+  dialogText: string | undefined;
 }) {
   return (
     <Dialog
@@ -29,6 +31,11 @@ export default function DiagramDialog({
             >
               Diagram
             </DialogTitle>
+            {dialogText && (
+              <div className="text-sm/5 text-white/50 mb-4">
+                {dialogText}
+              </div>
+            )}
             <div className="overflow-x-auto bg-zinc-100 dark:bg-zinc-100 rounded-lg p-4 mb-4">
               <img src={src} alt="Agent Flow Diagram" />
             </div>
