@@ -7,9 +7,9 @@ export default function Header({
   title,
   subtitle,
 }: {
-  src: string;
+  src: string | undefined;
   title: string;
-  subtitle: string;
+  subtitle: string | undefined;
 }) {
   let [isOpen, setIsOpen] = useState(false);
 
@@ -26,11 +26,13 @@ export default function Header({
       <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-100 mb-2">
         {title}
       </h1>
-      <div className="flex items-center justify-center gap-2">
-        <p className="text-zinc-600 dark:text-zinc-400">{subtitle}</p>
-        <LightBulbIcon className="size-5" onClick={open} />
-      </div>
-      <DiagramDialog isOpen={isOpen} onClose={close} src={src} />
+      {subtitle && (
+        <div className="flex items-center justify-center gap-2">
+          <p className="text-zinc-600 dark:text-zinc-400">{subtitle}</p>
+          <LightBulbIcon className="size-5" onClick={open} />
+        </div>
+      )}
+      {src && <DiagramDialog isOpen={isOpen} onClose={close} src={src} />}
     </div>
   );
 }
