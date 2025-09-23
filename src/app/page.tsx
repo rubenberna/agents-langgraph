@@ -1,13 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import { motion } from "motion/react";
 import CSHelper from "@/features/csHelper/csHelper";
 import ViewWrapper from "@/components/viewWrapper";
 import AgentCalculations from "@/features/agentCalculations/agentCalculations";
 import WhatIsLanggraph from "@/features/content/whatIsLanggraph";
 import Ecosystem from "@/features/content/ecosystem";
 import Workflows from "@/features/content/workflows";
+import Memory from "@/features/content/memory";
 
 export default function Home() {
   const sectionOneRef = useRef<HTMLDivElement>(null!);
@@ -51,10 +51,17 @@ export default function Home() {
         nextRef={sectionFourRef}
         handleScroll={handleScroll}
       >
-        <CSHelper />
+        <Memory />
       </ViewWrapper>
       <ViewWrapper
         viewRef={sectionFourRef}
+        nextRef={sectionFiveRef}
+        handleScroll={handleScroll}
+      >
+        <CSHelper />
+      </ViewWrapper>
+      <ViewWrapper
+        viewRef={sectionFiveRef}
         nextRef={null}
         handleScroll={handleScroll}
       >

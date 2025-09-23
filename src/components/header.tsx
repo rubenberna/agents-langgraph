@@ -11,7 +11,7 @@ export default function Header({
   src: string | undefined;
   title: string;
   subtitle: string | undefined;
-  dialogText: string | undefined;
+  dialogText?: string;
 }) {
   let [isOpen, setIsOpen] = useState(false);
 
@@ -34,7 +34,14 @@ export default function Header({
           <LightBulbIcon className="size-5" onClick={open} />
         </div>
       )}
-      {src && <DiagramDialog isOpen={isOpen} onClose={close} src={src} dialogText={dialogText} />}
+      {src && (
+        <DiagramDialog
+          isOpen={isOpen}
+          onClose={close}
+          src={src}
+          dialogText={dialogText}
+        />
+      )}
     </div>
   );
 }
