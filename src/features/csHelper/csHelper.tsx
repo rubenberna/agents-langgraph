@@ -20,7 +20,7 @@ The app doesn't work. I cannot process payments.
 
 export default function CSHelper() {
   // Use a single state object that matches the graph's state
-  const [customerMsg, setCustomerMsg] = useState<string>(mockMessage);
+  const [customerMsg, setCustomerMsg] = useState<string>("");
   const [state, setState] = useState<Partial<TicketStateType>>({});
   const [selectedPriority, setSelectedPriority] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);

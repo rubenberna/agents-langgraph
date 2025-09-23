@@ -44,7 +44,7 @@ Some examples include
   {
     title: "Orchestrator-worker",
     description: `In an orchestrator-worker configuration, the orchestrator:
-    -
+    
 - Breaks down tasks into subtasks
 - Delegates subtasks to workers
 - Synthesizes worker outputs into a final result

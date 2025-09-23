@@ -29,7 +29,7 @@ Think of it like RAM during one invocation.
     name: "Long-term",
     content: `**Long-term memory** is stored in a user session. It survives multiple runs as long as you reuse the same \`thread_id\`.
 
-To keep memory across multiple invocations of your graph (e.g., user asks question #1 now, comes back later and asks question #2), you attach a checkpointer when you compile the graph:
+To keep memory across multiple invocations of your graph (e.g., user asks question #1 now, comes back later and asks question #2), you attach a \`checkpointer\` when you compile the graph:
 
 \`\`\`javascript
 import { MemorySaver } from "@langchain/langgraph";
